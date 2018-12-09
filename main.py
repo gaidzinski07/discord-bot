@@ -1,9 +1,13 @@
-from bot import MarshallBot
+from bot.bot import MarshallBot
 
-ffmpeg_path = "/usr/bin/ffmpeg"
-token_path = "token"
+def main():
+    ffmpeg_path = "/usr/bin/ffmpeg"
+    token_path = "config/token"
+    prefix = ";"
 
-client = MarshallBot(ffmpeg_path)
-file = open(token_path, "r")
+    client = MarshallBot(ffmpeg_path, prefix)
+    with open(token_path, 'r') as file:
+        client.run(file.read())
 
-client.run(file.read())
+if __name__ == '__main__':
+    main()
