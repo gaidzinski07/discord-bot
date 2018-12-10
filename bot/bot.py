@@ -1,19 +1,21 @@
 import discord
 import asyncio
+import json
 from . import image
 from . import text
 from . import job
 
 class MarshallBot(discord.Client):
-    
-    def __init__(self, ffmpeg_path, prefix, *args, **kwargs):
+
+    def __init__(self, ffmpeg_path, language, prefix, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ffmpeg_path = ffmpeg_path
+        self.language = json.load(language)
         self.prefix = prefix
         self.bg_task = self.loop.create_task(job.wednesday(self))
 
     async def on_ready(self):
-        print("Logged in as {} with ID {}".format(self.user.name, self.user.id))
+        print(self.language['init'].format(self.user.name, self.user.id))
 
     def choose_text_channel(self, guild):
         for channel in guild.text_channels:
@@ -21,11 +23,11 @@ class MarshallBot(discord.Client):
                 return channel
 
     async def on_message(self, message):
-        if message.author == self.user:
+        if message.author is self.user:
             return
 
         if message.content.startswith("{}say".format(self.prefix)):
-            await text.say(message.channel)
+            await text.say(message.channel, self.language)
 
         elif message.content.startswith("{}crusade".format(self.prefix)):
             await image.crusade(message.channel)

@@ -10,4 +10,4 @@ async def respeta(message):
     await message.channel.send(string, file = discord.File("assets/images/respeta.jpg"))
 
 async def crusade(channel):
-    await channel.send("@everyone\nTime has come, my brothers", file = discord.File("assets/images/crusade.jpg"))
+    await channel.send("@everyone\nGET OVER HERE", file = discord.File("assets/images/crusade.jpg"))
