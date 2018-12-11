@@ -11,7 +11,7 @@ def main():
             client = MarshallBot(ffmpeg_path, file, prefix)
         
     except FileNotFoundError:
-        print("Language file not found")
+        print("{}: Language file not found".format(__name__))
         exit(1)
 
     try:
@@ -19,7 +19,7 @@ def main():
             client.run(file.read())
     
     except FileNotFoundError:
-        print(client.language['token_not_found'])
+        print("{}: {}".format(__name__, client.language['token_not_found']))
         exit(1)
 
 if __name__ == '__main__':
