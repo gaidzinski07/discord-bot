@@ -8,5 +8,12 @@
     "rm_success": "{} messages were removed",
     "mother_russia": "PRAISE BE MOTHER RUSSIA",
     "entering": "Here i'm :sunglasses:",
-    "returning": "I'm back :sunglasses:"
+    "returning": "I'm back :sunglasses:",
+    "welcome": "Welcome, {}. Have fun",
+    "kick": "{} took a home run",
+    "ban": "{} GOT REKT",
+    "unban": "Received Chim's forgiveness and then has been unbanned",
+    "vac_count": "It was {} days since <@172769153449590784> has been vacced",
+    "vac_anniversary": "\nCongratulations",
+    "vac_count_next": "\nRemains {} days to one more year since the vac ban"
 }
