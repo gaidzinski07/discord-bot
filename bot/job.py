@@ -22,8 +22,8 @@ async def wednesday(client):
 async def vac(client):
     await client.wait_until_ready()
 
+    vac_day = datetime.datetime(2014, 11, 24)
     while not client.is_closed():
-        vac_day = datetime.datetime(2014, 11, 24)
         now = datetime.datetime.now()
         diff = now - vac_day
         string = client.language['vac_count'].format(diff.days)

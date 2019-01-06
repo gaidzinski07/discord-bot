@@ -106,3 +106,6 @@ venv.bak/
 # Token file
 config/token
 config/phrases
+
+# My personal language file
+config/language/special.json
