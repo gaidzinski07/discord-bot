@@ -103,9 +103,11 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# Token file
-config/token
-config/phrases
+# Configuration file
+config/config.json
+
+# Phrases file
+config/phrases.json
 
 # My personal language file
 config/language/special.json

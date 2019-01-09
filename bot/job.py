@@ -15,9 +15,9 @@ async def wednesday(client):
                 await channel.send("", file = discord.File("assets/images/wednesday.jpg"))
             
             await asyncio.sleep(86400)
+            continue
         
-        else:
-            await asyncio.sleep(10)
+        await asyncio.sleep(10)
 
 async def vac(client):
     await client.wait_until_ready()

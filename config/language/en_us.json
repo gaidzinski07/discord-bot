@@ -1,6 +1,5 @@
 {
     "init": "Logged in as {} with ID {}",
-    "token_not_found": "Token file doesn't exist. Create a token file at config folder and put the bot token there",
     "phrases_not_found": "Phrases file doesn't exist. Create a phrases file at config folder",
     "fuckingstring_length": "The required string length is higher than supported",
     "int_value_error": "Only integer numbers are permitted as argument",

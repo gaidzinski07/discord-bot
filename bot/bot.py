@@ -1,19 +1,28 @@
 import discord
 import asyncio
-import json
 import datetime
+import praw
 from . import audio
 from . import image
 from . import text
 from . import job
 
 class MarshallBot(discord.Client):
-
-    def __init__(self, ffmpeg_path, language, prefix, *args, **kwargs):
+    def __init__(self, config_dict, language_dict, phrase_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.ffmpeg_path = ffmpeg_path
-        self.language = json.load(language)
-        self.prefix = prefix
+
+        self.config = config_dict
+        self.language = language_dict
+        self.phrases = phrase_list['phrases']
+        self.reddit = None
+
+        if self.config['reddit']['client_secret'] != "":
+            self.reddit = praw.Reddit(client_id = self.config['reddit']['client_token'],
+                                    client_secret = self.config['reddit']['client_secret'],
+                                    password = self.config['reddit']['password'],
+                                    user_agent = 'marshallbot',
+                                    username = self.config['reddit']['user'])
+
         self.wednesday_task = self.loop.create_task(job.wednesday(self))
         self.vac_task = self.loop.create_task(job.vac(self))
 
@@ -66,23 +75,23 @@ class MarshallBot(discord.Client):
         if message.author == self.user:
             return
 
-        if message.content.startswith("{}say".format(self.prefix)):
-            await text.say(message.channel, self.language)
+        elif message.content.startswith("{}say".format(self.config['command_prefix'])):
+            await text.say(self, message.channel)
 
-        elif message.content.startswith("{}crusade".format(self.prefix)):
+        elif message.content.startswith("{}crusade".format(self.config['command_prefix'])):
             await image.crusade(message.channel)
 
-        elif message.content.startswith("{}respeta".format(self.prefix)):
+        elif message.content.startswith("{}respeta".format(self.config['command_prefix'])):
             await image.respeta(message)
 
-        elif message.content.startswith("{}fuckingstring".format(self.prefix)):
-            stripped_text = message.content.replace("{}fuckingstring ".format(self.prefix), "")
-            await text.fucking_string(message.channel, stripped_text, self.language)
+        elif message.content.startswith("{}fuckingstring".format(self.config['command_prefix'])):
+            stripped_text = message.content.replace("{}fuckingstring ".format(self.config['command_prefix']), "")
+            await text.fucking_string(self, message.channel, stripped_text)
 
-        elif message.content.startswith("{}rm".format(self.prefix)):
-            stripped_text = message.content.replace("{}rm ".format(self.prefix), "")
-            await text.rm(message, stripped_text, self.language)
+        elif message.content.startswith("{}rm".format(self.config['command_prefix'])):
+            stripped_text = message.content.replace("{}rm ".format(self.config['command_prefix']), "")
+            await text.rm(self, message, stripped_text)
         
-        elif message.content.startswith("{}motherrussia".format(self.prefix)):
-            stripped_text = message.content.replace("{}motherrussia ".format(self.prefix), "")
-            await audio.mother_russia(message, stripped_text, self.language, self.ffmpeg_path)
+        elif message.content.startswith("{}motherrussia".format(self.config['command_prefix'])):
+            stripped_text = message.content.replace("{}motherrussia ".format(self.config['command_prefix']), "")
+            await audio.mother_russia(self, message, stripped_text)

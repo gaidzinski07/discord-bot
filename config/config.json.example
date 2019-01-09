@@ -1,0 +1,12 @@
+{
+    "token": "",
+    "reddit": {
+        "client_token": "",
+        "client_secret": "",
+        "user": "",
+        "password": ""
+    },
+    "language": "",
+    "ffmpeg_path": "",
+    "command_prefix": ""
+}
