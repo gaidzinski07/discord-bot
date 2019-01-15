@@ -1,11 +1,5 @@
-import discord
-import asyncio
-import datetime
-import praw
-from . import audio
-from . import image
-from . import text
-from . import job
+import discord, asyncio, datetime, praw
+from . import reddit, audio, image, text, job
 
 class MarshallBot(discord.Client):
     def __init__(self, config_dict, language_dict, phrase_list, *args, **kwargs):
@@ -14,10 +8,10 @@ class MarshallBot(discord.Client):
         self.config = config_dict
         self.language = language_dict
         self.phrases = phrase_list['phrases']
-        self.reddit = None
+        self.reddit_app = None
 
         if self.config['reddit']['client_secret'] != "":
-            self.reddit = praw.Reddit(client_id = self.config['reddit']['client_token'],
+            self.reddit_app = praw.Reddit(client_id = self.config['reddit']['client_token'],
                                     client_secret = self.config['reddit']['client_secret'],
                                     password = self.config['reddit']['password'],
                                     user_agent = 'marshallbot',
@@ -41,10 +35,10 @@ class MarshallBot(discord.Client):
     async def on_ready(self):
         print(self.language['init'].format(self.user.name, self.user.id))
 
-        for guild in self.guilds:
+        '''for guild in self.guilds:
             channel = self.choose_text_channel(guild)
 
-            await channel.send(self.language['returning'])
+            await channel.send(self.language['returning'])'''
 
     async def on_guild_join(self, guild):
         channel = self.choose_text_channel(guild)
@@ -95,3 +89,11 @@ class MarshallBot(discord.Client):
         elif message.content.startswith("{}motherrussia".format(self.config['command_prefix'])):
             stripped_text = message.content.replace("{}motherrussia ".format(self.config['command_prefix']), "")
             await audio.mother_russia(self, message, stripped_text)
+
+        elif message.content.startswith("{}animemes".format(self.config['command_prefix'])):
+            if self.reddit_app is None:
+                await message.channel.send(self.language['reddit_not_logged_send'])
+                print(self.language['reddit_not_logged'].format("animemes"))
+                return
+
+            await reddit.animemes(self, message)

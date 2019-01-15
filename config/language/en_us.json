@@ -14,5 +14,7 @@
     "unban": "{} received Chim's forgiveness and then has been unbanned",
     "vac_count": "It was {} days since <@172769153449590784> has been vacced",
     "vac_anniversary": "\nCongratulations",
-    "vac_count_next": "\nThe vac ban anniversary will happen in {} days"
+    "vac_count_next": "\nVac ban anniversary will happen in {} days",
+    "reddit_not_logged": "WARNING: You didn't setup a Reddit app. Called at {}",
+    "reddit_not_logged_send": "Instance of bot doesn't support Reddit related commands"
 }

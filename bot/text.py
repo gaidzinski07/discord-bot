@@ -1,6 +1,4 @@
-import discord
-import asyncio
-import random
+import discord, asyncio, random
 
 async def say(marshall, channel):
     random.seed()

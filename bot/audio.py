@@ -1,5 +1,4 @@
-import asyncio
-import discord
+import asyncio, discord
 
 async def mother_russia(marshall, message, stripped_text):
     if stripped_text == "stop" and message.guild.voice_client.is_connected():

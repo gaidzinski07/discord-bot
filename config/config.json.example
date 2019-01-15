@@ -1,12 +1,12 @@
 {
-    "token": "",
+    "token": "discord_token",
     "reddit": {
-        "client_token": "",
-        "client_secret": "",
-        "user": "",
-        "password": ""
+        "client_token": "reddit_app_client_id",
+        "client_secret": "reddit_app_client_secret",
+        "user": "reddit_user",
+        "password": "reddit_password"
     },
-    "language": "",
-    "ffmpeg_path": "",
-    "command_prefix": ""
+    "language": "language/your_language.json",
+    "ffmpeg_path": "path/to/ffmpeg",
+    "command_prefix": "a character of your choice"
 }

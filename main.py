@@ -1,5 +1,5 @@
-from bot.bot import MarshallBot
 import json
+from bot.bot import MarshallBot
 
 def main():
     try:

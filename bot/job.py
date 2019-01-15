@@ -1,6 +1,4 @@
-import datetime
-import discord
-import asyncio
+import datetime, discord, asyncio
 
 async def wednesday(client):
     await client.wait_until_ready()

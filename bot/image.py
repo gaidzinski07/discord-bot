@@ -1,5 +1,4 @@
-import asyncio
-import discord
+import asyncio, discord
 
 async def respeta(message):
     string = ""
