@@ -8,5 +8,5 @@
     },
     "language": "language/your_language.json",
     "ffmpeg_path": "path/to/ffmpeg",
-    "command_prefix": "a character of your choice"
+    "command_prefix": "a string prefix of your choice"
 }

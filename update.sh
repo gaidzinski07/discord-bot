@@ -1,6 +1,6 @@
 #!/bin/sh
 
-env = "python3 -m pip"
+env="python3 -m pip"
 $env install --upgrade aiohttp --user
 $env install --upgrade websockets --user
 $env install --upgrade PyNaCl --user

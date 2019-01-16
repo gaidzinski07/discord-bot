@@ -35,10 +35,10 @@ class MarshallBot(discord.Client):
     async def on_ready(self):
         print(self.language['init'].format(self.user.name, self.user.id))
 
-        '''for guild in self.guilds:
+        for guild in self.guilds:
             channel = self.choose_text_channel(guild)
 
-            await channel.send(self.language['returning'])'''
+            await channel.send(self.language['returning'])
 
     async def on_guild_join(self, guild):
         channel = self.choose_text_channel(guild)
