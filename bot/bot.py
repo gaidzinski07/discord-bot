@@ -1,7 +1,7 @@
 import discord, asyncio, datetime, praw
 from . import reddit, audio, image, text, job
 
-class MarshallBot(discord.Client):
+class DiscordBot(discord.Client):
     def __init__(self, config_dict, language_dict, phrase_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -14,15 +14,15 @@ class MarshallBot(discord.Client):
             self.reddit_app = praw.Reddit(client_id = self.config['reddit']['client_token'],
                                     client_secret = self.config['reddit']['client_secret'],
                                     password = self.config['reddit']['password'],
-                                    user_agent = 'marshallbot',
+                                    user_agent = 'discordbot',
                                     username = self.config['reddit']['user'])
 
-        self.wednesday_task = self.loop.create_task(job.wednesday(self))
-        self.vac_task = self.loop.create_task(job.vac(self))
+        '''self.wednesday_task = self.loop.create_task(job.wednesday(self))
+        self.vac_task = self.loop.create_task(job.vac(self))'''
 
     def choose_text_channel(self, guild):
         for channel in guild.text_channels:
-            if channel.name == "general":
+            if channel.name in ("general", "geral", "text"):
                 if channel.permissions_for(guild.me).send_messages:
                     return channel
                 
@@ -31,6 +31,8 @@ class MarshallBot(discord.Client):
         for channel in guild.text_channels:
             if channel.permissions_for(guild.me).send_messages:
                 return channel
+
+        return None
 
     async def on_ready(self):
         print(self.language['init'].format(self.user.name, self.user.id))
@@ -97,3 +99,6 @@ class MarshallBot(discord.Client):
                 return
 
             await reddit.animemes(self, message)
+
+        elif message.content.startswith("{}about".format(self.config['command_prefix'])):
+            await text.about(message.channel)

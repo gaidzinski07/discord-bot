@@ -1,2 +1,2 @@
-# Marshall Bot
+# Discord Bot
 ## 

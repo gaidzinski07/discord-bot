@@ -1,5 +1,5 @@
 import json
-from bot.bot import MarshallBot
+from bot.bot import DiscordBot
 
 def main():
     try:
@@ -15,6 +15,10 @@ def main():
         with open("config/phrases.json", "r") as file:
             phrase_list = json.load(file)
 
+        client = DiscordBot(config_dict, language_dict, phrase_list)
+    
+        client.run(client.config['token'])
+
     except FileNotFoundError:
         if step == 1:
             print("{}: Config file not found".format(__name__))
@@ -26,10 +30,12 @@ def main():
             print("{}: {}".format(__name__, language_dict['phrases_not_found']))
         
         exit(1)
-
-    client = MarshallBot(config_dict, language_dict, phrase_list)
     
-    client.run(client.config['token'])
+    except KeyboardInterrupt:
+        if not client.is_closed:
+            client.close()
+            
+        exit(0)
 
 if __name__ == '__main__': 
     main()
