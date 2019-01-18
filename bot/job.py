@@ -20,6 +20,8 @@ async def wednesday(client):
 async def vac(client):
     await client.wait_until_ready()
 
+    await asyncio.sleep(86400)
+
     vac_day = datetime.datetime(2014, 11, 24)
     while not client.is_closed():
         now = datetime.datetime.now()

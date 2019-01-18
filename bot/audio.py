@@ -12,3 +12,16 @@ async def mother_russia(client, message, stripped_text):
         ffmpegaudio = discord.FFmpegPCMAudio("assets/audio/motherrussia.mp3", executable = client.config['ffmpeg_path'])
 
         voice_client.play(ffmpegaudio)
+    
+# Future function to play audio from a websource (Youtube and mp3?)
+async def play(client, message, url):
+    return
+
+async def stop(client, message):
+    return
+
+async def playlist(client, message):
+    return
+
+async def rm_audio(client, message, stripped_text):
+    return

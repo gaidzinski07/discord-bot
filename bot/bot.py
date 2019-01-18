@@ -17,8 +17,8 @@ class DiscordBot(discord.Client):
                                     user_agent = 'discordbot',
                                     username = self.config['reddit']['user'])
 
-        '''self.wednesday_task = self.loop.create_task(job.wednesday(self))
-        self.vac_task = self.loop.create_task(job.vac(self))'''
+        self.wednesday_task = self.loop.create_task(job.wednesday(self))
+        self.vac_task = self.loop.create_task(job.vac(self))
 
     def choose_text_channel(self, guild):
         for channel in guild.text_channels:
