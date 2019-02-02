@@ -1,14 +1,16 @@
-import logging
+# import logging
+# Logger is crucial here
 
 from bot import DiscordBot
-
-# Logger is crucial here
 
 def main():
     try:
         client = DiscordBot()
-    
-        client.run(client.config.settings['token'])
+
+        if client == None:
+            exit(1)
+
+        client.run()
     
     except KeyboardInterrupt:
         if not client.is_closed:

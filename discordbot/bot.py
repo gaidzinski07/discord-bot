@@ -21,7 +21,7 @@ class Config():
 
             step = 3
             with open("config/phrases.json", "r") as file:
-                self.phrases = json.load(file)
+                self.phrases = json.load(file)['phrases']
             
             self.reddit = None
 
@@ -34,25 +34,31 @@ class Config():
         
         except FileNotFoundError:
             if step == 1:
-                print("{}: Config file not found".format(__name__))
+                message = "{}: Config file not found".format(__name__)
         
             elif step == 2:
-                print("{}: Language file not found".format(__name__))
+                message = "{}: Language file not found".format(__name__)
             
             elif step == 3:
-                print("{}: {}".format(__name__, self.language['phrases_not_found']))
+                message = "{}: {}".format(__name__, self.language['phrases_not_found'])
 
-            # ConfigException with message here
+            raise exception.ConfigException(message)
 
 class DiscordBot(discord.Client):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        # __init__ needs to catch ConfigException
+        try:
+            self.config = Config()
+            self.wednesday_task = self.loop.create_task(self.wednesday())
+            self.vac_task = self.loop.create_task(self.vac())
 
-        self.config = Config()
-        self.wednesday_task = self.loop.create_task(self.wednesday())
-        self.vac_task = self.loop.create_task(self.vac())
+        except exception.ConfigException as ex:
+            print(str(ex))
+            return None
+
+    def run(self):
+        super().run(self.config.settings['token'])
 
     def choose_text_channel(self, guild):
         for channel in guild.text_channels:
@@ -92,10 +98,10 @@ class DiscordBot(discord.Client):
 
     async def vac(self):
         await self.wait_until_ready()
-
         await asyncio.sleep(86400)
 
         vac_day = datetime.datetime(2014, 11, 24)
+
         while not self.is_closed():
             now = datetime.datetime.now()
             diff = now - vac_day
@@ -121,11 +127,6 @@ class DiscordBot(discord.Client):
 
     async def on_ready(self):
         print(self.config.language['init'].format(self.user.name, self.user.id))
-
-        for guild in self.guilds:
-            channel = self.choose_text_channel(guild)
-
-            await channel.send(self.config.language['returning'])
 
     async def on_guild_join(self, guild):
         channel = self.choose_text_channel(guild)
@@ -185,6 +186,9 @@ class DiscordBot(discord.Client):
             stripped_text = message.content.replace("{} ".format(self.command("motherrussia")), "")
 
             await self.mother_russia(message, stripped_text)
+        
+        elif message.content.startswith(self.command("stop")):
+            await self.stop(message)
 
     async def say(self, channel):
         random.seed()
@@ -222,10 +226,9 @@ class DiscordBot(discord.Client):
             
         string = ""
         acceptable_characters = ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-        
+        random.seed()
+
         for _ in range(length):
-            # ?
-            random.seed()
             string += random.choice(acceptable_characters)
 
         await channel.send("{}".format(string))
@@ -267,10 +270,7 @@ class DiscordBot(discord.Client):
         await message.channel.send(submission.permalink, embed=embed)
 
     async def mother_russia(self, message, stripped_text):
-        if message.guild.voice_client.is_connected():
-            if stripped_text == "stop":
-                await message.guild.voice_client.disconnect()
-                
+        if not message.guild.voice_client == None and message.guild.voice_client.is_connected():
             return
         
         if not message.author.voice.channel == None:
@@ -279,3 +279,7 @@ class DiscordBot(discord.Client):
             
             await message.channel.send(self.config.language['mother_russia'], file = discord.File("assets/images/motherrussia.jpg"))
             voice_client.play(ffmpeg_audio)
+
+    async def stop(self, message):
+        if not message.guild.voice_client == None and message.guild.voice_client.is_connected() :
+            await message.guild.voice_client.disconnect()
