@@ -9,6 +9,7 @@ import re
 import exception
 
 class Config():
+
     def __init__(self):
         try:
             step = 1
@@ -45,6 +46,7 @@ class Config():
             raise exception.ConfigException(message)
 
 class DiscordBot(discord.Client):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
@@ -165,10 +167,10 @@ class DiscordBot(discord.Client):
 
             await self.rm(message, stripped_text)
 
-        elif message.content.startswith(self.command("fuckingstring")):
-            stripped_text = message.content.replace("{} ".format(self.command("fuckingstring")), "")
+        elif message.content.startswith(self.command("bfstring")):
+            stripped_text = message.content.replace("{} ".format(self.command("bfstring")), "")
 
-            await self.fucking_string(message.channel, stripped_text)
+            await self.bfstring(message.channel, stripped_text)
 
         elif message.content.startswith(self.command("commands")):
             await self.commands(message.channel)
@@ -212,7 +214,7 @@ class DiscordBot(discord.Client):
 
         await message.channel.send(self.config.language['permission_error'])
     
-    async def fucking_string(self, channel, stripped_text):
+    async def bfstring(self, channel, stripped_text):
         try:
             length = int(stripped_text)
         
@@ -221,7 +223,7 @@ class DiscordBot(discord.Client):
             return
 
         if length > 256:
-            await channel.send(self.config.language['fuckingstring_length'])
+            await channel.send(self.config.language['bfstring_length'])
             return
             
         string = ""
@@ -255,9 +257,9 @@ class DiscordBot(discord.Client):
         
         subreddit = self.config.reddit.subreddit("Animemes")
         hot_submissions = list(subreddit.hot(limit = 50))
-        
+        random.seed()
+
         while True:
-            random.seed()
             submission = random.choice(hot_submissions)
 
             if re.match(r".*\.(jpg|png)", submission.url):
@@ -281,5 +283,6 @@ class DiscordBot(discord.Client):
             voice_client.play(ffmpeg_audio)
 
     async def stop(self, message):
-        if not message.guild.voice_client == None and message.guild.voice_client.is_connected() :
+        if not message.guild.voice_client == None and message.guild.voice_client.is_connected():
             await message.guild.voice_client.disconnect()
+            
